@@ -12,6 +12,7 @@ public class SelectQuestions extends PostgresConnectionHandler {
      * @return a list of all the films.
      */
     public List<Film> getAllFilms() {
+
         return this.dbAdapter.getAllFilms();
     }
 
@@ -20,7 +21,8 @@ public class SelectQuestions extends PostgresConnectionHandler {
      * @return a list of all the actors.
      */
     public List<Actor> getAllActors() {
-        return null;
+
+        return this.dbAdapter.getAllActors();
     }
 
     /**

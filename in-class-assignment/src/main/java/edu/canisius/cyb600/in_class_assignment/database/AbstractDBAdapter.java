@@ -16,6 +16,8 @@ public abstract class AbstractDBAdapter {
     //SELECTS
     public abstract List<Film> getAllFilms();
 
+    public abstract List<Actor> getAllActors();
+
     public abstract List<Actor> getActorsWithLastName(String lastName);
 
     //INSERTS

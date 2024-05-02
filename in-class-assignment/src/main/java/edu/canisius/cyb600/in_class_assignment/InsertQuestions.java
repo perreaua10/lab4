@@ -11,6 +11,7 @@ public class InsertQuestions extends PostgresConnectionHandler {
      * @return The same actor object brought in but with its ID and LAST_UPDATE filled in.
      */
     public Actor addActorToDatabase(Actor actor) {
+
         return this.dbAdapter.addActor(actor);
     }
 }

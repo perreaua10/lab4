@@ -50,6 +50,34 @@ public class PostgresDBAdapter extends AbstractDBAdapter {
     }
 
     @Override
+    public List<Actor> getAllActors() {
+        //First, we are going to open up a new statement
+        try (Statement statement = conn.createStatement()) {
+            //This statement is easy
+            //Select * from actor is saying "Return all Fields for all rows in films". Because there
+            //is no "where clause", all rows are returned
+            ResultSet results = statement.executeQuery("Select * from actor");
+            //Initialize an empty List to hold the return set of films.
+            List<Actor> actors = new ArrayList<>();
+            //Loop through all the results and create a new Film object to hold all its information
+            while (results.next()) {
+                Actor actor = new Actor();
+                actor.setActorId(results.getInt("ACTOR_ID"));
+                actor.setFirstName(results.getString("FIRST_NAME"));
+                actor.setLastName(results.getString("LAST_NAME"));
+                actor.setLastUpdate(results.getDate("LAST_UPDATE"));
+                //Add film to the array
+                actors.add(actor);
+            }
+            //Return all the films.
+            return actors;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public List<Actor> getActorsWithLastName(String lastName) {
         return new ArrayList<>();
     }
