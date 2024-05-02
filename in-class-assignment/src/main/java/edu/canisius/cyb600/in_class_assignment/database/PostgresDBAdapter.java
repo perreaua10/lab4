@@ -79,6 +79,31 @@ public class PostgresDBAdapter extends AbstractDBAdapter {
 
     @Override
     public List<Actor> getActorsWithLastName(String lastName) {
+        //Create a string with the sql statement
+        String sql = "Select * from actor where last_name = ?";
+        //Prepare the SQL statement with the code
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            //Substitute a string for last name for the ? in the sql
+            statement.setString(1, lastName.toUpperCase());
+            ResultSet results = statement.executeQuery();
+            //Initialize an empty List to hold the return set of films.
+            List<Actor> actors = new ArrayList<>();
+            //Loop through all the results and create a new Film object to hold all its information
+            while (results.next()) {
+                Actor actor = new Actor();
+                actor.setActorId(results.getInt("ACTOR_ID"));
+                actor.setFirstName(results.getString("FIRST_NAME"));
+                actor.setLastName(results.getString("LAST_NAME"));
+                actor.setLastUpdate(results.getDate("LAST_UPDATE"));
+                //Add film to the array
+                actors.add(actor);
+            }
+            //Return all the films.
+            return actors;
+        }
+        catch (SQLException exception) {
+            exception.printStackTrace();
+        }
         return new ArrayList<>();
     }
 
