@@ -4,6 +4,7 @@ import edu.canisius.cyb600.in_class_assignment.jdbc.PostgresConnectionHandler;
 import edu.canisius.cyb600.lab4.dataobjects.Actor;
 import edu.canisius.cyb600.lab4.dataobjects.Film;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectQuestions extends PostgresConnectionHandler {
@@ -31,7 +32,18 @@ public class SelectQuestions extends PostgresConnectionHandler {
      * @return A list of actor objects that share a last name.
      */
     public List<Actor> getAllActorsWithLastNameWithCode(String lastName) {
-        return null;
+
+        List<Actor> allActors = this.dbAdapter.getAllActors();
+        // Loop to filter actors based on the provided last name
+        List<Actor> actorsWithLastName = new ArrayList<>();
+        for (Actor actor : allActors) {
+            if (actor.getLastName().equalsIgnoreCase(lastName)) {
+                actorsWithLastName.add(actor);
+            }
+        }
+
+        return actorsWithLastName;
+
     }
 
     /**

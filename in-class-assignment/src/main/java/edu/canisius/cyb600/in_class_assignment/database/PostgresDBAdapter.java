@@ -110,11 +110,51 @@ public class PostgresDBAdapter extends AbstractDBAdapter {
 
     @Override
     public Actor addActor(Actor actor) {
+
+        String sql = "INSERT INTO ACTOR (first_name, last_name) VALUES (? , ? ) returning ACTOR_ID, LAST_UPDATE";
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            int i = 1;
+            statement.setString(i++, actor.getFirstName().toUpperCase());
+            statement.setString(i++, actor.getLastName().toUpperCase());
+            ResultSet results = statement.executeQuery();
+            if (results.next()) {
+                actor.setActorId(results.getInt("ACTOR_ID"));
+                actor.setLastUpdate(results.getDate("LAST_UPDATE"));
+            }
+            return actor;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
         return actor;
+
     }
 
     @Override
     public List<Film> getFilmsForActor(Actor actor) {
-        return new ArrayList<>();
+        String sql = "SELECT film.* " +
+                "FROM actor, film_actor, film " +
+                "WHERE actor.actor_id = film_actor.actor_id " +
+                "AND film.film_id = film_actor.film_id " +
+                "AND actor.actor_id = ?";
+
+        List<Film> films = new ArrayList<>();
+
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, actor.getActorId());
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Film film = new Film();
+                film.setFilmId(resultSet.getInt("film_id"));
+                film.setTitle(resultSet.getString("title"));
+                film.setDescription(resultSet.getString("description"));
+
+                films.add(film);
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return films;
     }
 }
