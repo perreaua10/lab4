@@ -148,6 +148,15 @@ public class PostgresDBAdapter extends AbstractDBAdapter {
                 film.setFilmId(resultSet.getInt("film_id"));
                 film.setTitle(resultSet.getString("title"));
                 film.setDescription(resultSet.getString("description"));
+                film.setReleaseYear(resultSet.getString("RELEASE_YEAR"));
+                film.setLanguageId(resultSet.getInt("LANGUAGE_ID"));
+                film.setRentalDuration(resultSet.getInt("RENTAL_DURATION"));
+                film.setRentalRate(resultSet.getDouble("RENTAL_RATE"));
+                film.setLength(resultSet.getInt("LENGTH"));
+                film.setReplacementCost(resultSet.getDouble("REPLACEMENT_COST"));
+                film.setRating(resultSet.getString("RATING"));
+                film.setSpecialFeatures(resultSet.getString("SPECIAL_FEATURES"));
+                film.setLastUpdate(resultSet.getDate("LAST_UPDATE"));
 
                 films.add(film);
             }
