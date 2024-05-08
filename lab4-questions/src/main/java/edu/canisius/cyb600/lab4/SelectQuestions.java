@@ -33,7 +33,7 @@ public class SelectQuestions extends PostgresConnectionHandler {
      * @return A list of actors all sharing the first letter in the first name.
      */
     public List<Actor> getActorsFirstNameStartingWithX(char firstLetter) {
-        return null;
+        return this.dbAdapter.getActorsFirstNameStartingWithX(firstLetter) ;
     }
 }
 
