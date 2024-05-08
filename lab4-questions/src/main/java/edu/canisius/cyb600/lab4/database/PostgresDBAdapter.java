@@ -1,6 +1,7 @@
 package edu.canisius.cyb600.lab4.database;
 
 import edu.canisius.cyb600.lab4.dataobjects.Actor;
+import edu.canisius.cyb600.lab4.dataobjects.Category;
 import edu.canisius.cyb600.lab4.dataobjects.Film;
 
 import java.sql.*;
@@ -128,6 +129,44 @@ public class PostgresDBAdapter extends AbstractDBAdapter {
             }
         }
         return added;
+    }
+
+    @Override
+    public List<Film> getFilmsInCategory(Category category){
+        String sql = "SELECT film.* " +
+                "FROM category, film_category, film " +
+                "WHERE category.category_id = film_category.category_id " +
+                "AND film.film_id = film_category.film_id " +
+                "AND category.category_id = ?";
+
+        List<Film> films = new ArrayList<>();
+
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, category.getCategoryId());
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Film film = new Film();
+                film.setFilmId(resultSet.getInt("film_id"));
+                film.setTitle(resultSet.getString("title"));
+                film.setDescription(resultSet.getString("description"));
+                film.setReleaseYear(resultSet.getString("RELEASE_YEAR"));
+                film.setLanguageId(resultSet.getInt("LANGUAGE_ID"));
+                film.setRentalDuration(resultSet.getInt("RENTAL_DURATION"));
+                film.setRentalRate(resultSet.getDouble("RENTAL_RATE"));
+                film.setLength(resultSet.getInt("LENGTH"));
+                film.setReplacementCost(resultSet.getDouble("REPLACEMENT_COST"));
+                film.setRating(resultSet.getString("RATING"));
+                film.setSpecialFeatures(resultSet.getString("SPECIAL_FEATURES"));
+                film.setLastUpdate(resultSet.getDate("LAST_UPDATE"));
+
+                films.add(film);
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return films;
     }
 }
 
