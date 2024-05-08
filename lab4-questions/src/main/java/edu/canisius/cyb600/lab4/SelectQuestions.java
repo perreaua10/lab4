@@ -13,7 +13,8 @@ public class SelectQuestions extends PostgresConnectionHandler {
      * @return A list of Strings that represent the categories.
      */
     public List<String> getAllDistinctCategoryNames() {
-        return null;
+
+        return this.dbAdapter.getAllDistinctCategoryNames();
     }
 
     /**
@@ -22,7 +23,8 @@ public class SelectQuestions extends PostgresConnectionHandler {
      * @return A list of films with a length longer than "length"
      */
     public List<Film> getAllFilmsWithALengthLongerThanX(int length) {
-        return null;
+
+        return this.dbAdapter.getAllFilmsWithALengthLongerThanX(length);
     }
 
     /**
